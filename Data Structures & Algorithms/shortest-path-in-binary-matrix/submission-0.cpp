@@ -1,0 +1,43 @@
+class Solution {
+public:
+    int n,m,final=INT_MAX;
+    int shortestPathBinaryMatrix(vector<vector<int>>& grid)
+    {
+        n=grid.size();
+        if(grid[0][0]==1 || grid[n-1][n-1]==1)
+        {
+            return -1;
+        }
+
+        vector<pair<int,int>> dir = {{1,0}, {0,1}, {-1,0}, {0,-1}, {1,1}, {-1,1}, {-1,-1}, {1,-1}};
+        vector<vector<bool>> visited(n,vector<bool>(n,false));
+
+        queue<tuple<int,int,int>> q;
+        q.push({0,0,1});
+        visited[0][0] = true;
+
+        while(!q.empty())
+        {
+            auto [r,c,travis] = q.front();
+            q.pop();
+
+            if(r==n-1 && c==n-1)
+            {
+                return travis;
+            }
+
+            for(auto [dr,dc] : dir)
+            {
+                int nr = r+dr;
+                int nc = c+dc;
+
+                if(nr>=0 && nr<n && nc>=0 && nc<n && grid[nr][nc]==0 && visited[nr][nc] == false)
+                {
+                    q.push({nr,nc,travis+1});
+                    visited[nr][nc] = true;
+                }
+            }
+        }
+        return -1;
+    }
+};
